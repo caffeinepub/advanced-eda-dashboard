@@ -1,0 +1,128 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 3,
+  "summary": "Build an Advanced EDA Dashboard as a React + TypeScript web app (mobile-friendly PWA) converted from a Streamlit Python app. Features include CSV upload, dataset preview, missing value handling, column filtering, rich visualization hub, light/dark theme toggle, and an AI chatbot for data exploration.",
+  "architectural_notes": [
+    "React + TypeScript frontend with recharts/plotly for visualizations",
+    "PWA configuration (manifest + service worker) for mobile deployment",
+    "CSV parsing via PapaParse in the browser",
+    "State management for filtered dataframe and theme"
+  ],
+  "known_issues": [],
+  "isFixRequest": false,
+  "imageRequirements": "## Required Images\n- Abstract data visualization graphic with flowing green grid lines and scatter plot dots on a dark background, used as a hero/banner image (eda-hero-banner.dim_1200x300.png)\n- Small green bar chart icon on transparent background (eda-logo-icon.dim_64x64.png)",
+  "existing_features": [
+    {
+      "id": "feature-implement-a-csv-file-upload-feature-that-reads-the-file-client-side-no-backend-parses-it-into-a-tabular-structure-and-displays-a-preview-of-the-first-5-rows-a-descriptive-statistics-table-count-mean-std-min-max-quartiles-per-numeric-column-and-summary-metrics-showing-total-rows-total-columns-and-total-missing-values-in-a-3-column-card-layout",
+      "title": "Implement a CSV file upload feature that reads the file client-side (no backend), parses it into a tabular structure, and displays: a preview of the first 5 rows, a descriptive statistics table (count, mean, std, min, max, quartiles per numeric column), and summary metrics showing total rows, total columns, and total missing values in a 3-column card layout.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-a-missing-value-handler-section-that-appears-only-when-the-dataset-has-missing-values-provide-a-dropdown-with-three-options-drop-rows-fill-with-mean-fill-with-median-and-an-apply-button-when-applied-update-the-in-memory-dataset-accordingly-and-show-a-success-notification",
+      "title": "Implement a missing value handler section that appears only when the dataset has missing values. Provide a dropdown with three options — 'Drop rows', 'Fill with mean', 'Fill with median' — and an 'Apply' button. When applied, update the in-memory dataset accordingly and show a success notification.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-a-sidebar-or-collapsible-panel-on-mobile-with-a-filter-data-section-include-a-dropdown-to-select-any-numeric-column-and-a-range-slider-to-filter-rows-by-min-max-value-display-the-filtered-dataset-in-a-scrollable-table-below-the-controls-all-visualizations-and-statistics-below-should-reflect-the-filtered-dataset",
+      "title": "Implement a sidebar (or collapsible panel on mobile) with a 'Filter Data' section. Include a dropdown to select any numeric column and a range slider to filter rows by min/max value. Display the filtered dataset in a scrollable table below the controls. All visualizations and statistics below should reflect the filtered dataset.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-build-a-visualization-hub-section-with-a-dropdown-to-select-chart-type-support-the-following-chart-types-using-recharts-or-a-compatible-charting-library-histogram-boxplot-scatter-with-y-axis-column-selector-line-bar-violin-heatmap-correlation-matrix-with-color-scale-pie-treemap-and-3d-scatter-x-y-z-axis-selectors-each-chart-should-be-rendered-using-the-currently-filtered-dataset-and-the-selected-numeric-columns",
+      "title": "Build a Visualization Hub section with a dropdown to select chart type. Support the following chart types using Recharts or a compatible charting library: Histogram, Boxplot, Scatter (with Y-axis column selector), Line, Bar, Violin, Heatmap (correlation matrix with color scale), Pie, Treemap, and 3D Scatter (X/Y/Z axis selectors). Each chart should be rendered using the currently filtered dataset and the selected numeric columns.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-a-light-dark-theme-toggle-accessible-from-the-sidebar-or-top-navigation-bar-the-selected-theme-should-apply-globally-across-the-entire-app-including-background-text-card-surfaces-chart-backgrounds-and-sidebar",
+      "title": "Implement a Light/Dark theme toggle accessible from the sidebar or top navigation bar. The selected theme should apply globally across the entire app including background, text, card surfaces, chart backgrounds, and sidebar.",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-an-ai-style-chatbot-panel-floating-button-or-side-drawer-that-allows-the-user-to-ask-natural-language-questions-about-the-loaded-dataset-the-chatbot-should-respond-with-rule-based-answers-derived-from-the-parsed-data-e-g-column-names-row-count-mean-max-of-a-column-missing-value-counts-data-types-no-external-ai-api-should-be-used-answers-must-be-computed-client-side-from-the-dataset",
+      "title": "Implement an AI-style chatbot panel (floating button or side drawer) that allows the user to ask natural language questions about the loaded dataset. The chatbot should respond with rule-based answers derived from the parsed data (e.g., column names, row count, mean/max of a column, missing value counts, data types). No external AI API should be used; answers must be computed client-side from the dataset.",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-the-app-is-fully-mobile-responsive-the-sidebar-should-collapse-into-a-hamburger-menu-or-bottom-sheet-on-small-screens-all-tables-must-be-horizontally-scrollable-charts-must-resize-to-fit-the-viewport-width-the-layout-must-be-usable-on-screens-as-small-as-375px-wide",
+      "title": "Ensure the app is fully mobile-responsive. The sidebar should collapse into a hamburger menu or bottom sheet on small screens. All tables must be horizontally scrollable. Charts must resize to fit the viewport width. The layout must be usable on screens as small as 375px wide.",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-apply-a-cohesive-dark-tech-data-science-visual-theme-use-a-deep-charcoal-near-black-base-e-g-0e1117-for-the-dark-mode-default-with-vivid-green-4caf50-as-the-primary-accent-color-for-headings-buttons-and-chart-highlights-use-clean-monospace-influenced-typography-for-data-labels-and-a-modern-sans-serif-for-ui-text-cards-and-panels-should-have-subtle-borders-and-slight-elevation-keep-the-light-theme-crisp-white-with-the-same-green-accent",
+      "title": "Apply a cohesive dark-tech / data-science visual theme: use a deep charcoal/near-black base (e.g. #0E1117) for the dark mode default, with vivid green (#4CAF50) as the primary accent color for headings, buttons, and chart highlights. Use clean monospace-influenced typography for data labels and a modern sans-serif for UI text. Cards and panels should have subtle borders and slight elevation. Keep the light theme crisp white with the same green accent.",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "CSV file upload with dataset preview (head, describe, summary metrics)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Missing value handler with drop rows, fill with mean, fill with median options",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Sidebar column filter with numeric column selector and range slider",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Visualization Hub with histogram, boxplot, scatter, line, bar, violin, heatmap, pie, treemap, and 3D chart types",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Light/Dark theme toggle",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-6",
+      "summary": "AI chatbot for data exploration assistance",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-7",
+      "summary": "Mobile-friendly PWA deployment support",
+      "reqIds": [],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "Advanced EDA Dashboard",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

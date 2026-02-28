@@ -1,0 +1,212 @@
+{
+  "kind": "build_request",
+  "title": "Advanced EDA Dashboard with Chatbot",
+  "projectName": "EDA Dashboard",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Implement a CSV file upload feature that reads the file client-side (no backend), parses it into a tabular structure, and displays: a preview of the first 5 rows, a descriptive statistics table (count, mean, std, min, max, quartiles per numeric column), and summary metrics showing total rows, total columns, and total missing values in a 3-column card layout.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "File upload",
+          "dataset preview",
+          "dataset info",
+          "Dataset Summary",
+          "Total Rows",
+          "Total Columns",
+          "Missing Values"
+        ]
+      },
+      "acceptanceCriteria": [
+        "User can upload a .csv file via a file input",
+        "First 5 rows are displayed in a scrollable table",
+        "Descriptive statistics table is shown for numeric columns",
+        "Summary cards show correct row count, column count, and total missing value count"
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Implement a missing value handler section that appears only when the dataset has missing values. Provide a dropdown with three options — 'Drop rows', 'Fill with mean', 'Fill with median' — and an 'Apply' button. When applied, update the in-memory dataset accordingly and show a success notification.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Missing value handler",
+          "Drop rows",
+          "fill with mean",
+          "fill with median",
+          "Apply missing value handling"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Section is hidden when there are no missing values",
+        "Dropdown allows selecting drop/mean/median strategy",
+        "Apply button updates the dataset in memory",
+        "Success toast/notification is shown after applying",
+        "Summary metrics update to reflect 0 missing values after applying"
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Implement a sidebar (or collapsible panel on mobile) with a 'Filter Data' section. Include a dropdown to select any numeric column and a range slider to filter rows by min/max value. Display the filtered dataset in a scrollable table below the controls. All visualizations and statistics below should reflect the filtered dataset.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Filter data",
+          "select numeric column",
+          "select range",
+          "filtered data"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Numeric column selector lists all numeric columns from the uploaded dataset",
+        "Range slider min/max are derived from the selected column's actual min/max",
+        "Filtered dataset table updates in real-time as the slider moves",
+        "Charts in Visualization Hub use the filtered dataset"
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Build a Visualization Hub section with a dropdown to select chart type. Support the following chart types using Recharts or a compatible charting library: Histogram, Boxplot, Scatter (with Y-axis column selector), Line, Bar, Violin, Heatmap (correlation matrix with color scale), Pie, Treemap, and 3D Scatter (X/Y/Z axis selectors). Each chart should be rendered using the currently filtered dataset and the selected numeric columns.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Visualization Hub",
+          "histogram",
+          "boxplot",
+          "scatter",
+          "line",
+          "bar",
+          "violin",
+          "heatmap",
+          "pie",
+          "treemap",
+          "3D"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Chart type dropdown lists all 10 chart types",
+        "Each chart type renders correctly using the filtered dataset",
+        "Scatter, Line, Bar charts allow column selection for axes",
+        "Heatmap shows correlation values between all numeric columns",
+        "3D scatter chart provides X, Y, Z column selectors",
+        "Charts are responsive and visible on mobile screens"
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Implement a Light/Dark theme toggle accessible from the sidebar or top navigation bar. The selected theme should apply globally across the entire app including background, text, card surfaces, chart backgrounds, and sidebar.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Theme",
+          "Light",
+          "Dark",
+          "background-color: #0e1117"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Toggle switch or radio button allows switching between Light and Dark themes",
+        "All UI surfaces (background, cards, sidebar, tables, charts) update when theme changes",
+        "Theme preference persists during the session"
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "text": "Implement an AI-style chatbot panel (floating button or side drawer) that allows the user to ask natural language questions about the loaded dataset. The chatbot should respond with rule-based answers derived from the parsed data (e.g., column names, row count, mean/max of a column, missing value counts, data types). No external AI API should be used; answers must be computed client-side from the dataset.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "add a chatbot"
+        ]
+      },
+      "acceptanceCriteria": [
+        "A chat icon/button opens a chatbot drawer or modal",
+        "User can type questions in a text input and submit",
+        "Chatbot correctly answers questions about: number of rows/columns, column names, mean/min/max/std of a numeric column, missing value count per column",
+        "Chatbot responds with a helpful fallback message for unrecognized questions",
+        "Chatbot panel is accessible and usable on mobile screens"
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "text": "Ensure the app is fully mobile-responsive. The sidebar should collapse into a hamburger menu or bottom sheet on small screens. All tables must be horizontally scrollable. Charts must resize to fit the viewport width. The layout must be usable on screens as small as 375px wide.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "deploy this code using mobile web app"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Sidebar is hidden by default on mobile and toggled via a menu button",
+        "All data tables are scrollable horizontally on small screens",
+        "Charts scale down to fit the screen without overflow",
+        "No horizontal page scroll on screens 375px and wider",
+        "Buttons and interactive elements have touch-friendly tap targets (min 44px)"
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "text": "Apply a cohesive dark-tech / data-science visual theme: use a deep charcoal/near-black base (e.g. #0E1117) for the dark mode default, with vivid green (#4CAF50) as the primary accent color for headings, buttons, and chart highlights. Use clean monospace-influenced typography for data labels and a modern sans-serif for UI text. Cards and panels should have subtle borders and slight elevation. Keep the light theme crisp white with the same green accent.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "color:#4CAF50",
+          "Advanced Themed Dashboard",
+          "background-color: #0e1117"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Dark mode uses #0E1117 or similar deep background with #4CAF50 accents",
+        "Light mode uses white/light gray backgrounds with the same green accent",
+        "Typography is consistent and legible across both themes",
+        "All interactive elements (buttons, dropdowns, sliders) respect the theme colors"
+      ]
+    }
+  ],
+  "constraints": [
+    "All CSV parsing and data processing must happen entirely client-side in the browser — no backend data storage or processing",
+    "No external AI/LLM APIs may be used; the chatbot must be fully rule-based using the loaded dataset",
+    "Do not use Streamlit, Python, or any server-side rendering framework",
+    "The backend (Motoko) should not be used to store or process dataset rows"
+  ],
+  "nonGoals": [
+    "Server-side CSV storage or database persistence of uploaded files",
+    "User authentication or multi-user session management",
+    "Export or download of processed data or charts",
+    "Real-time collaboration features",
+    "Integration with external data sources or APIs beyond local CSV upload"
+  ],
+  "imageRequirements": {
+    "required": [
+      "Abstract data visualization graphic with flowing green grid lines and scatter plot dots on a dark background, used as a hero/banner image (eda-hero-banner.dim_1200x300.png)",
+      "Small green bar chart icon on transparent background (eda-logo-icon.dim_64x64.png)"
+    ],
+    "edits": []
+  }
+}

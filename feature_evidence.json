@@ -1,0 +1,183 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-implement-a-csv-file-upload-feature-that-reads-the-file-client-side-no-backend-parses-it-into-a-tabular-structure-and-displays-a-preview-of-the-first-5-rows-a-descriptive-statistics-table-count-mean-std-min-max-quartiles-per-numeric-column-and-summary-metrics-showing-total-rows-total-columns-and-total-missing-values-in-a-3-column-card-layout",
+      "featureTitle": "Implement a CSV file upload feature that reads the file client-side (no backend), parses it into a tabular structure, and displays: a preview of the first 5 rows, a descriptive statistics table (count, mean, std, min, max, quartiles per numeric column), and summary metrics showing total rows, total columns, and total missing values in a 3-column card layout.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/DatasetPreview.tsx",
+        "frontend/src/components/DescriptiveStats.tsx",
+        "frontend/src/components/FileUpload.tsx",
+        "frontend/src/components/SummaryCards.tsx",
+        "frontend/src/context/DataContext.tsx",
+        "frontend/src/hooks/useCSVParser.ts"
+      ],
+      "components": [
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-1"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-a-missing-value-handler-section-that-appears-only-when-the-dataset-has-missing-values-provide-a-dropdown-with-three-options-drop-rows-fill-with-mean-fill-with-median-and-an-apply-button-when-applied-update-the-in-memory-dataset-accordingly-and-show-a-success-notification",
+      "featureTitle": "Implement a missing value handler section that appears only when the dataset has missing values. Provide a dropdown with three options — 'Drop rows', 'Fill with mean', 'Fill with median' — and an 'Apply' button. When applied, update the in-memory dataset accordingly and show a success notification.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/MissingValueHandler.tsx"
+      ],
+      "components": [
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-2"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-a-sidebar-or-collapsible-panel-on-mobile-with-a-filter-data-section-include-a-dropdown-to-select-any-numeric-column-and-a-range-slider-to-filter-rows-by-min-max-value-display-the-filtered-dataset-in-a-scrollable-table-below-the-controls-all-visualizations-and-statistics-below-should-reflect-the-filtered-dataset",
+      "featureTitle": "Implement a sidebar (or collapsible panel on mobile) with a 'Filter Data' section. Include a dropdown to select any numeric column and a range slider to filter rows by min/max value. Display the filtered dataset in a scrollable table below the controls. All visualizations and statistics below should reflect the filtered dataset.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/FilteredDataTable.tsx",
+        "frontend/src/components/Sidebar.tsx",
+        "frontend/src/context/DataContext.tsx"
+      ],
+      "components": [
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-3"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-build-a-visualization-hub-section-with-a-dropdown-to-select-chart-type-support-the-following-chart-types-using-recharts-or-a-compatible-charting-library-histogram-boxplot-scatter-with-y-axis-column-selector-line-bar-violin-heatmap-correlation-matrix-with-color-scale-pie-treemap-and-3d-scatter-x-y-z-axis-selectors-each-chart-should-be-rendered-using-the-currently-filtered-dataset-and-the-selected-numeric-columns",
+      "featureTitle": "Build a Visualization Hub section with a dropdown to select chart type. Support the following chart types using Recharts or a compatible charting library: Histogram, Boxplot, Scatter (with Y-axis column selector), Line, Bar, Violin, Heatmap (correlation matrix with color scale), Pie, Treemap, and 3D Scatter (X/Y/Z axis selectors). Each chart should be rendered using the currently filtered dataset and the selected numeric columns.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/VisualizationHub.tsx",
+        "frontend/src/components/charts/Scatter3D.tsx",
+        "frontend/src/components/charts/ViolinPlot.tsx"
+      ],
+      "components": [
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-4"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-a-light-dark-theme-toggle-accessible-from-the-sidebar-or-top-navigation-bar-the-selected-theme-should-apply-globally-across-the-entire-app-including-background-text-card-surfaces-chart-backgrounds-and-sidebar",
+      "featureTitle": "Implement a Light/Dark theme toggle accessible from the sidebar or top navigation bar. The selected theme should apply globally across the entire app including background, text, card surfaces, chart backgrounds, and sidebar.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/index.css",
+        "frontend/tailwind.config.js"
+      ],
+      "components": [
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-5"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-an-ai-style-chatbot-panel-floating-button-or-side-drawer-that-allows-the-user-to-ask-natural-language-questions-about-the-loaded-dataset-the-chatbot-should-respond-with-rule-based-answers-derived-from-the-parsed-data-e-g-column-names-row-count-mean-max-of-a-column-missing-value-counts-data-types-no-external-ai-api-should-be-used-answers-must-be-computed-client-side-from-the-dataset",
+      "featureTitle": "Implement an AI-style chatbot panel (floating button or side drawer) that allows the user to ask natural language questions about the loaded dataset. The chatbot should respond with rule-based answers derived from the parsed data (e.g., column names, row count, mean/max of a column, missing value counts, data types). No external AI API should be used; answers must be computed client-side from the dataset.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/Chatbot.tsx",
+        "frontend/src/context/DataContext.tsx",
+        "frontend/src/hooks/useChatbot.ts"
+      ],
+      "components": [
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-6"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-ensure-the-app-is-fully-mobile-responsive-the-sidebar-should-collapse-into-a-hamburger-menu-or-bottom-sheet-on-small-screens-all-tables-must-be-horizontally-scrollable-charts-must-resize-to-fit-the-viewport-width-the-layout-must-be-usable-on-screens-as-small-as-375px-wide",
+      "featureTitle": "Ensure the app is fully mobile-responsive. The sidebar should collapse into a hamburger menu or bottom sheet on small screens. All tables must be horizontally scrollable. Charts must resize to fit the viewport width. The layout must be usable on screens as small as 375px wide.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/Sidebar.tsx",
+        "frontend/src/components/charts/Scatter3D.tsx",
+        "frontend/src/index.css"
+      ],
+      "components": [
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-7"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-apply-a-cohesive-dark-tech-data-science-visual-theme-use-a-deep-charcoal-near-black-base-e-g-0e1117-for-the-dark-mode-default-with-vivid-green-4caf50-as-the-primary-accent-color-for-headings-buttons-and-chart-highlights-use-clean-monospace-influenced-typography-for-data-labels-and-a-modern-sans-serif-for-ui-text-cards-and-panels-should-have-subtle-borders-and-slight-elevation-keep-the-light-theme-crisp-white-with-the-same-green-accent",
+      "featureTitle": "Apply a cohesive dark-tech / data-science visual theme: use a deep charcoal/near-black base (e.g. #0E1117) for the dark mode default, with vivid green (#4CAF50) as the primary accent color for headings, buttons, and chart highlights. Use clean monospace-influenced typography for data labels and a modern sans-serif for UI text. Cards and panels should have subtle borders and slight elevation. Keep the light theme crisp white with the same green accent.",
+      "files": [
+        "frontend/src/components/Chatbot.tsx",
+        "frontend/src/components/Sidebar.tsx",
+        "frontend/src/components/SummaryCards.tsx",
+        "frontend/src/components/VisualizationHub.tsx",
+        "frontend/src/index.css",
+        "frontend/tailwind.config.js"
+      ],
+      "components": [
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-8"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

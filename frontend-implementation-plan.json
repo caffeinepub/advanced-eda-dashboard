@@ -1,0 +1,387 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Advanced EDA Dashboard with Chatbot",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "summary": "Implement CSV upload with preview, descriptive statistics, and summary metrics",
+      "acceptanceCriteria": [
+        "User can upload a .csv file via a file input",
+        "First 5 rows are displayed in a scrollable table",
+        "Descriptive statistics table is shown for numeric columns",
+        "Summary cards show correct row count, column count, and total missing value count"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useCSVParser.ts",
+          "operation": "create",
+          "description": "Create a custom hook that handles CSV file parsing using the File API and PapaParse or similar library. Parse the CSV into an array of objects, detect column types (numeric vs. non-numeric), and compute descriptive statistics (count, mean, std, min, max, Q1, median, Q3) for each numeric column. Return parsed data, column metadata, and statistics."
+        },
+        {
+          "path": "frontend/src/components/FileUpload.tsx",
+          "operation": "create",
+          "description": "Create a file input component that accepts .csv files. On file selection, trigger the CSV parsing hook and store the parsed data in app state (React context or parent component state). Display a loading indicator during parsing."
+        },
+        {
+          "path": "frontend/src/components/DatasetPreview.tsx",
+          "operation": "create",
+          "description": "Create a component that displays the first 5 rows of the parsed dataset in a horizontally scrollable table. Use a table element with sticky headers and overflow-x-auto styling for mobile responsiveness."
+        },
+        {
+          "path": "frontend/src/components/DescriptiveStats.tsx",
+          "operation": "create",
+          "description": "Create a component that renders a table of descriptive statistics for all numeric columns. Display columns for: Column Name, Count, Mean, Std, Min, Q1, Median, Q3, Max. Ensure the table is scrollable and responsive."
+        },
+        {
+          "path": "frontend/src/components/SummaryCards.tsx",
+          "operation": "create",
+          "description": "Create a component that displays three cards in a responsive grid: Total Rows, Total Columns, and Missing Values. Compute missing value count by iterating over all cells in the dataset. Use shadcn/ui Card components for consistent styling."
+        },
+        {
+          "path": "frontend/src/context/DataContext.tsx",
+          "operation": "create",
+          "description": "Create a React context to manage global dataset state including: raw parsed data, filtered data, column metadata, statistics, missing value count, and current filter settings. Export provider and custom hook for consuming context."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wrap the app with DataContext provider. Import and render FileUpload, SummaryCards, DatasetPreview, and DescriptiveStats components in a logical layout with proper spacing and responsive grid."
+        }
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "summary": "Implement missing value handler with drop/mean/median strategies",
+      "acceptanceCriteria": [
+        "Section is hidden when there are no missing values",
+        "Dropdown allows selecting drop/mean/median strategy",
+        "Apply button updates the dataset in memory",
+        "Success toast/notification is shown after applying",
+        "Summary metrics update to reflect 0 missing values after applying"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/MissingValueHandler.tsx",
+          "operation": "create",
+          "description": "Create a component that conditionally renders only when missing values > 0. Display a dropdown (using shadcn/ui Select) with options: 'Drop rows', 'Fill with mean', 'Fill with median'. Include an Apply button that triggers the selected strategy. Implement logic to: (1) Drop rows with any missing values, (2) Fill missing numeric values with column mean, (3) Fill missing numeric values with column median. Update the DataContext with the cleaned dataset and recompute statistics. Show a success toast using shadcn/ui Toast component."
+        },
+        {
+          "path": "frontend/src/hooks/useMissingValueHandler.ts",
+          "operation": "create",
+          "description": "Create a custom hook that encapsulates the missing value handling logic. Accept dataset and strategy as inputs, return a function that applies the strategy and returns the cleaned dataset. Handle edge cases like columns with all missing values."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Import and render the MissingValueHandler component below the SummaryCards section. Ensure it is wired to the DataContext and only appears when missing values exist."
+        }
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "summary": "Implement sidebar with numeric column filter and range slider",
+      "acceptanceCriteria": [
+        "Numeric column selector lists all numeric columns from the uploaded dataset",
+        "Range slider min/max are derived from the selected column's actual min/max",
+        "Filtered dataset table updates in real-time as the slider moves",
+        "Charts in Visualization Hub use the filtered dataset"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/Sidebar.tsx",
+          "operation": "create",
+          "description": "Create a sidebar component that displays a 'Filter Data' section. Include a dropdown (shadcn/ui Select) to choose a numeric column and a range slider (shadcn/ui Slider) to select min/max values for filtering. On mobile, make the sidebar collapsible via a hamburger menu toggle. Wire filter changes to update DataContext's filtered dataset state."
+        },
+        {
+          "path": "frontend/src/components/FilteredDataTable.tsx",
+          "operation": "create",
+          "description": "Create a component that displays the currently filtered dataset in a scrollable table. Use the filtered data from DataContext. Ensure horizontal scroll on mobile and sticky headers."
+        },
+        {
+          "path": "frontend/src/hooks/useDataFilter.ts",
+          "operation": "create",
+          "description": "Create a custom hook that accepts the full dataset, selected column, and range values. Return the filtered dataset by keeping only rows where the selected column value falls within the range. Handle non-numeric or missing values gracefully."
+        },
+        {
+          "path": "frontend/src/context/DataContext.tsx",
+          "operation": "modify",
+          "description": "Add state for: selectedFilterColumn, filterRange, and filteredData. Provide functions to update these states and automatically recompute filteredData whenever filter settings change."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Import and render the Sidebar and FilteredDataTable components. Ensure the sidebar is positioned on the left on desktop and toggleable on mobile. Wire the sidebar filter controls to update DataContext."
+        }
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "summary": "Build Visualization Hub with 10 chart types using Recharts",
+      "acceptanceCriteria": [
+        "Chart type dropdown lists all 10 chart types",
+        "Each chart type renders correctly using the filtered dataset",
+        "Scatter, Line, Bar charts allow column selection for axes",
+        "Heatmap shows correlation values between all numeric columns",
+        "3D scatter chart provides X, Y, Z column selectors",
+        "Charts are responsive and visible on mobile screens"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/VisualizationHub.tsx",
+          "operation": "create",
+          "description": "Create a component with a dropdown (shadcn/ui Select) to choose chart type from: Histogram, Boxplot, Scatter, Line, Bar, Violin, Heatmap, Pie, Treemap, 3D Scatter. Conditionally render the selected chart component based on user selection. For charts requiring axis selection (Scatter, Line, Bar, 3D Scatter), display dropdowns to select columns. Use the filtered dataset from DataContext for all charts."
+        },
+        {
+          "path": "frontend/src/components/charts/Histogram.tsx",
+          "operation": "create",
+          "description": "Create a histogram chart component using Recharts BarChart. Accept a numeric column from the filtered dataset, compute frequency bins, and render the histogram. Ensure responsive sizing and theme-aware colors."
+        },
+        {
+          "path": "frontend/src/components/charts/Boxplot.tsx",
+          "operation": "create",
+          "description": "Create a boxplot chart component using Recharts or custom SVG rendering. Display min, Q1, median, Q3, max for a selected numeric column from the filtered dataset. Style according to theme."
+        },
+        {
+          "path": "frontend/src/components/charts/ScatterChart.tsx",
+          "operation": "create",
+          "description": "Create a scatter chart component using Recharts ScatterChart. Provide dropdowns for X and Y axis column selection. Plot points from the filtered dataset. Support theme colors and responsive sizing."
+        },
+        {
+          "path": "frontend/src/components/charts/LineChart.tsx",
+          "operation": "create",
+          "description": "Create a line chart component using Recharts LineChart. Provide dropdowns for X and Y axis column selection. Plot lines from the filtered dataset. Support theme colors and responsive sizing."
+        },
+        {
+          "path": "frontend/src/components/charts/BarChart.tsx",
+          "operation": "create",
+          "description": "Create a bar chart component using Recharts BarChart. Provide dropdowns for X (category) and Y (value) axis column selection. Render bars from the filtered dataset. Support theme colors and responsive sizing."
+        },
+        {
+          "path": "frontend/src/components/charts/ViolinPlot.tsx",
+          "operation": "create",
+          "description": "Create a violin plot component using custom SVG or a compatible library. Display the distribution shape for a selected numeric column. Use the filtered dataset and apply theme colors."
+        },
+        {
+          "path": "frontend/src/components/charts/Heatmap.tsx",
+          "operation": "create",
+          "description": "Create a heatmap component that computes the correlation matrix for all numeric columns in the filtered dataset. Use a grid layout with color-coded cells representing correlation strength. Include a color scale legend. Ensure responsive layout."
+        },
+        {
+          "path": "frontend/src/components/charts/PieChart.tsx",
+          "operation": "create",
+          "description": "Create a pie chart component using Recharts PieChart. Allow selection of a categorical or binned numeric column. Display slices with labels and percentages. Support theme colors and responsive sizing."
+        },
+        {
+          "path": "frontend/src/components/charts/Treemap.tsx",
+          "operation": "create",
+          "description": "Create a treemap component using Recharts Treemap. Allow selection of a categorical column and a numeric column for size. Render nested rectangles from the filtered dataset. Support theme colors and responsive sizing."
+        },
+        {
+          "path": "frontend/src/components/charts/Scatter3D.tsx",
+          "operation": "create",
+          "description": "Create a 3D scatter plot component using a library like react-plotly.js or Three.js with React-Three-Fiber. Provide dropdowns for X, Y, and Z axis column selection. Plot 3D points from the filtered dataset. Ensure interactivity (rotation, zoom) and theme-aware styling."
+        },
+        {
+          "path": "frontend/src/hooks/useCorrelationMatrix.ts",
+          "operation": "create",
+          "description": "Create a custom hook that computes the Pearson correlation matrix for all numeric columns in a dataset. Return a 2D array of correlation coefficients for use in the Heatmap component."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Import and render the VisualizationHub component below the FilteredDataTable. Ensure it consumes the filtered dataset from DataContext and updates in real-time as filters change."
+        }
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "summary": "Implement Light/Dark theme toggle",
+      "acceptanceCriteria": [
+        "Toggle switch or radio button allows switching between Light and Dark themes",
+        "All UI surfaces (background, cards, sidebar, tables, charts) update when theme changes",
+        "Theme preference persists during the session"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/context/ThemeContext.tsx",
+          "operation": "create",
+          "description": "Create a React context for managing theme state (light or dark). Store the selected theme in localStorage for session persistence. Provide a toggle function and current theme value to consumers. Apply the theme class to the document root element."
+        },
+        {
+          "path": "frontend/src/components/ThemeToggle.tsx",
+          "operation": "create",
+          "description": "Create a theme toggle component using a shadcn/ui Switch or custom toggle button. Allow users to switch between Light and Dark themes. Wire to ThemeContext to update global theme state."
+        },
+        {
+          "path": "frontend/src/index.css",
+          "operation": "modify",
+          "description": "Define CSS custom properties (variables) for both light and dark themes. Include variables for background colors, text colors, card surfaces, border colors, and chart backgrounds. Use the .dark class to apply dark theme variables. Set dark mode default to #0E1117 background and light mode to white."
+        },
+        {
+          "path": "frontend/tailwind.config.js",
+          "operation": "modify",
+          "description": "Enable dark mode with class strategy. Extend the theme to include custom colors for primary accent (#4CAF50), background shades, and text colors that align with the design requirements."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wrap the app with ThemeContext provider. Render the ThemeToggle component in the top navigation bar or sidebar. Ensure all child components inherit theme-aware styles."
+        }
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "summary": "Implement rule-based chatbot for dataset Q&A",
+      "acceptanceCriteria": [
+        "A chat icon/button opens a chatbot drawer or modal",
+        "User can type questions in a text input and submit",
+        "Chatbot correctly answers questions about: number of rows/columns, column names, mean/min/max/std of a numeric column, missing value count per column",
+        "Chatbot responds with a helpful fallback message for unrecognized questions",
+        "Chatbot panel is accessible and usable on mobile screens"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/Chatbot.tsx",
+          "operation": "create",
+          "description": "Create a chatbot component with a floating button that opens a drawer or modal (using shadcn/ui Dialog or Sheet). Include a message history area and a text input with a send button. Display user and bot messages in a scrollable conversation view."
+        },
+        {
+          "path": "frontend/src/hooks/useChatbot.ts",
+          "operation": "create",
+          "description": "Create a custom hook that processes user questions using rule-based logic. Parse questions for keywords like 'rows', 'columns', 'mean', 'min', 'max', 'std', 'missing', 'column names'. Access the DataContext to retrieve dataset metadata and compute answers. Return responses as strings. Implement a fallback message for unrecognized questions."
+        },
+        {
+          "path": "frontend/src/utils/nlpParser.ts",
+          "operation": "create",
+          "description": "Create a utility module with functions to parse natural language questions into intents and entities. Use simple keyword matching and pattern recognition to identify questions about statistics, column names, row counts, etc. Extract column names from questions when relevant."
+        },
+        {
+          "path": "frontend/src/context/DataContext.tsx",
+          "operation": "modify",
+          "description": "Expose helper functions in DataContext for common chatbot queries: getRowCount, getColumnCount, getColumnNames, getMissingValueCount, getColumnStats (mean, min, max, std for a given column)."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Import and render the Chatbot component. Position the floating chat button in the bottom-right corner (or appropriate location for mobile). Ensure the chatbot drawer is accessible and does not obstruct main content."
+        }
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "summary": "Ensure full mobile responsiveness",
+      "acceptanceCriteria": [
+        "Sidebar is hidden by default on mobile and toggled via a menu button",
+        "All data tables are scrollable horizontally on small screens",
+        "Charts scale down to fit the screen without overflow",
+        "No horizontal page scroll on screens 375px and wider",
+        "Buttons and interactive elements have touch-friendly tap targets (min 44px)"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/Sidebar.tsx",
+          "operation": "modify",
+          "description": "Add mobile-responsive behavior: hide sidebar by default on screens smaller than 768px. Add a hamburger menu button in the top navigation that toggles sidebar visibility using state. Use Tailwind responsive classes (md:block, hidden, etc.) to control visibility."
+        },
+        {
+          "path": "frontend/src/components/MobileNav.tsx",
+          "operation": "create",
+          "description": "Create a mobile navigation component with a hamburger menu icon that toggles the Sidebar on small screens. Position it in the top-left or top-right of the screen. Use shadcn/ui Sheet or custom drawer for smooth slide-in animation."
+        },
+        {
+          "path": "frontend/src/index.css",
+          "operation": "modify",
+          "description": "Add global styles for horizontal scrollability on tables (overflow-x-auto on table containers). Ensure all interactive elements (buttons, inputs, sliders) have min-height and min-width of 44px for touch accessibility. Apply responsive typography scaling using Tailwind's responsive font classes."
+        },
+        {
+          "path": "frontend/src/components/charts/Histogram.tsx",
+          "operation": "modify",
+          "description": "Ensure the Recharts ResponsiveContainer is used with width='100%' and a height that scales appropriately on mobile. Test that the chart does not cause horizontal overflow."
+        },
+        {
+          "path": "frontend/src/components/charts/ScatterChart.tsx",
+          "operation": "modify",
+          "description": "Ensure the Recharts ResponsiveContainer is used with width='100%' and a height that scales appropriately on mobile. Test that the chart does not cause horizontal overflow."
+        },
+        {
+          "path": "frontend/src/components/charts/LineChart.tsx",
+          "operation": "modify",
+          "description": "Ensure the Recharts ResponsiveContainer is used with width='100%' and a height that scales appropriately on mobile. Test that the chart does not cause horizontal overflow."
+        },
+        {
+          "path": "frontend/src/components/charts/BarChart.tsx",
+          "operation": "modify",
+          "description": "Ensure the Recharts ResponsiveContainer is used with width='100%' and a height that scales appropriately on mobile. Test that the chart does not cause horizontal overflow."
+        },
+        {
+          "path": "frontend/src/components/charts/Heatmap.tsx",
+          "operation": "modify",
+          "description": "Ensure the heatmap container is scrollable horizontally on small screens using overflow-x-auto. Scale cell sizes responsively or provide a zoomed-out view on mobile."
+        },
+        {
+          "path": "frontend/src/components/charts/PieChart.tsx",
+          "operation": "modify",
+          "description": "Ensure the Recharts ResponsiveContainer is used with width='100%' and a height that scales appropriately on mobile. Test that the chart does not cause horizontal overflow."
+        },
+        {
+          "path": "frontend/src/components/charts/Treemap.tsx",
+          "operation": "modify",
+          "description": "Ensure the Recharts ResponsiveContainer is used with width='100%' and a height that scales appropriately on mobile. Test that the chart does not cause horizontal overflow."
+        },
+        {
+          "path": "frontend/src/components/charts/Scatter3D.tsx",
+          "operation": "modify",
+          "description": "Ensure the 3D chart container has a responsive width and height. On mobile, reduce default camera distance or provide touch controls for rotation. Prevent horizontal overflow."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wrap the main layout in a responsive grid or flex container. On mobile (< 768px), stack components vertically. On desktop, use a sidebar + main content layout. Import and render MobileNav for small screens."
+        }
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "summary": "Apply dark-tech visual theme with #0E1117 background and #4CAF50 accent",
+      "acceptanceCriteria": [
+        "Dark mode uses #0E1117 or similar deep background with #4CAF50 accents",
+        "Light mode uses white/light gray backgrounds with the same green accent",
+        "Typography is consistent and legible across both themes",
+        "All interactive elements (buttons, dropdowns, sliders) respect the theme colors"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/index.css",
+          "operation": "modify",
+          "description": "Define CSS variables for dark theme: --background: #0E1117, --foreground: #E0E0E0, --primary: #4CAF50, --card: #1A1D24, --border: #2A2D34. Define CSS variables for light theme: --background: #FFFFFF, --foreground: #1A1A1A, --primary: #4CAF50, --card: #F5F5F5, --border: #E0E0E0. Apply monospace-influenced font for data labels (e.g., 'Roboto Mono' or 'JetBrains Mono') and modern sans-serif for UI text (e.g., 'Inter' or 'Open Sans'). Set card styles with subtle borders and slight elevation using box-shadow."
+        },
+        {
+          "path": "frontend/tailwind.config.js",
+          "operation": "modify",
+          "description": "Extend Tailwind theme to include custom colors: primary: #4CAF50, background: { light: '#FFFFFF', dark: '#0E1117' }, card: { light: '#F5F5F5', dark: '#1A1D24' }. Add custom font families for data labels (monospace) and UI text (sans-serif). Configure dark mode strategy to use class-based toggling."
+        },
+        {
+          "path": "frontend/src/components/SummaryCards.tsx",
+          "operation": "modify",
+          "description": "Apply theme-aware styling to the cards using Tailwind classes. Use bg-card, text-foreground, border-border, and ensure the primary accent (#4CAF50) is used for headings or key metrics. Add subtle shadow and rounded corners."
+        },
+        {
+          "path": "frontend/src/components/Sidebar.tsx",
+          "operation": "modify",
+          "description": "Apply theme-aware background and border colors to the sidebar. Use bg-card for the sidebar surface and text-foreground for text. Ensure buttons and interactive elements use the primary accent color."
+        },
+        {
+          "path": "frontend/src/components/VisualizationHub.tsx",
+          "operation": "modify",
+          "description": "Apply theme-aware background to the chart container. Pass theme colors (primary accent, background, text) as props or via CSS variables to all chart components for consistent styling."
+        },
+        {
+          "path": "frontend/src/components/Chatbot.tsx",
+          "operation": "modify",
+          "description": "Apply theme-aware styling to the chatbot drawer. Use bg-card for the message container, text-foreground for text, and primary accent for the send button. Ensure user and bot messages have distinct background colors that respect the theme."
+        }
+      ]
+    }
+  ]
+}
